@@ -1,11 +1,19 @@
 // Libs
-import React from "react";
-import StarRating from "react-native-star-rating";
-import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
+import React, { useContext } from "react";
+// import StarRating from "react-native-star-rating";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 import { Text } from "react-native";
+import { Toast } from "toastify-react-native";
 
 // Utils
 import { formatPrice, discontCalc } from "../../utils";
+
+// Context
+import { AppContext } from "../../context";
 
 // Types
 import { CardProps } from "../../types";
@@ -20,11 +28,34 @@ export const Card = ({
   thumbnail,
   rating,
   price,
-  discountPercent,
+  discountPercentage,
+  stock,
+  category,
 }: CardProps) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const { addToFavorites, addToCart } = useContext(AppContext);
 
-  const handleClickDetails = () => {
+  const handleAddToFavorites = () => {
+    addToFavorites({
+      id,
+      title,
+      brand,
+      thumbnail,
+      rating,
+      price,
+      discountPercentage,
+      stock,
+      category,
+    });
+
+    Toast.success("Produto adicionado aos favoritos!");
+  };
+
+  const handleAddToCart = () => {
+    addToCart({ id, title, thumbnail, price });
+  };
+
+  const redirectToProduct = () => {
     navigation.navigate("Product", {
       productId: id,
     });
@@ -34,7 +65,9 @@ export const Card = ({
     <S.CardWrapper>
       <S.CardImageWrapper>
         <S.CardImage source={{ uri: thumbnail }} />
-        <S.CardFavoriteWrapper></S.CardFavoriteWrapper>
+        <S.CardFavoriteWrapper
+          onPress={handleAddToFavorites}
+        ></S.CardFavoriteWrapper>
       </S.CardImageWrapper>
 
       <S.CardContent>
@@ -42,7 +75,7 @@ export const Card = ({
         <S.CardBrand>Marca: {brand}</S.CardBrand>
 
         <S.CardDiscountPrice>
-          {formatPrice(discontCalc(price, discountPercent))}
+          {formatPrice(discontCalc(price, discountPercentage))}
         </S.CardDiscountPrice>
 
         <S.CardPrice>
@@ -52,7 +85,7 @@ export const Card = ({
           </Text>
         </S.CardPrice>
 
-        <S.CardPromotion>{discountPercent}% de desconto</S.CardPromotion>
+        <S.CardPromotion>{discountPercentage}% de desconto</S.CardPromotion>
 
         <S.CardRatingWrapper>
           <S.CardRating>{rating}</S.CardRating>
@@ -68,11 +101,11 @@ export const Card = ({
         </S.CardRatingWrapper>
 
         <S.CardActionsWrapper>
-          <S.CardActionDetails onPress={handleClickDetails}>
+          <S.CardActionDetails onPress={redirectToProduct}>
             <Text style={{ textDecorationLine: "underline" }}>Ver mais</Text>
           </S.CardActionDetails>
 
-          <S.CardActionCart>
+          <S.CardActionCart onPress={handleAddToCart}>
             <Text style={{ color: "white" }}>ADD</Text>
           </S.CardActionCart>
         </S.CardActionsWrapper>
