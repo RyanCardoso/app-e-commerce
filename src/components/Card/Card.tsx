@@ -1,6 +1,5 @@
 // Libs
 import React, { useContext } from "react";
-// import StarRating from "react-native-star-rating";
 import {
   NavigationProp,
   ParamListBase,
@@ -14,6 +13,9 @@ import { formatPrice, discontCalc } from "../../utils";
 
 // Context
 import { AppContext } from "../../context";
+
+// Components
+import { Rating } from "../Rating";
 
 // Types
 import { CardProps } from "../../types";
@@ -75,7 +77,7 @@ export const Card = ({
         <S.CardBrand>Marca: {brand}</S.CardBrand>
 
         <S.CardDiscountPrice>
-          {formatPrice(discontCalc(price, discountPercentage))}
+          {discontCalc(price, discountPercentage)}
         </S.CardDiscountPrice>
 
         <S.CardPrice>
@@ -87,18 +89,7 @@ export const Card = ({
 
         <S.CardPromotion>{discountPercentage}% de desconto</S.CardPromotion>
 
-        <S.CardRatingWrapper>
-          <S.CardRating>{rating}</S.CardRating>
-          {/* <StarRating
-            disabled
-            maxStars={5}
-            rating={rating}
-            starSize={15}
-            fullStarColor="gold"
-            emptyStarColor="gray"
-            containerStyle={{ width: 90 }}
-          /> */}
-        </S.CardRatingWrapper>
+        <Rating rating={rating} />
 
         <S.CardActionsWrapper>
           <S.CardActionDetails onPress={redirectToProduct}>

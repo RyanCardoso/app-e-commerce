@@ -7,5 +7,5 @@ export const formatPrice = (price: number) => {
 
 export const discontCalc = (price: number, percentage: number) => {
   const discont = (price * percentage) / 100;
-  return price - discont;
+  return formatPrice(price - discont);
 };

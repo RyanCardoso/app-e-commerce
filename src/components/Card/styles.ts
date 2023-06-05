@@ -65,16 +65,6 @@ export const CardPromotion = styled.Text`
   color: #ff0000;
 `;
 
-export const CardRatingWrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-`;
-
-export const CardRating = styled.Text`
-  color: #565959;
-`;
-
 export const CardActionsWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
