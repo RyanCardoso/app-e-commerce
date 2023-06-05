@@ -75,3 +75,19 @@ export const CardRating = styled.Text`
   color: #565959;
 `;
 
+export const CardActionsWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 10px;
+`;
+
+export const CardActionCart = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: rgb(239, 108, 0);
+`;
+
+export const CardActionDetails = styled.TouchableOpacity``;

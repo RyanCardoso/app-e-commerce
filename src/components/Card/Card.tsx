@@ -1,6 +1,7 @@
 // Libs
 import React from "react";
 import StarRating from "react-native-star-rating";
+import { NavigationProp, ParamListBase, useNavigation } from "@react-navigation/native";
 import { Text } from "react-native";
 
 // Utils
@@ -21,6 +22,14 @@ export const Card = ({
   price,
   discountPercent,
 }: CardProps) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  const handleClickDetails = () => {
+    navigation.navigate("Product", {
+      productId: id,
+    });
+  };
+
   return (
     <S.CardWrapper>
       <S.CardImageWrapper>
@@ -58,6 +67,15 @@ export const Card = ({
           /> */}
         </S.CardRatingWrapper>
 
+        <S.CardActionsWrapper>
+          <S.CardActionDetails onPress={handleClickDetails}>
+            <Text style={{ textDecorationLine: "underline" }}>Ver mais</Text>
+          </S.CardActionDetails>
+
+          <S.CardActionCart>
+            <Text style={{ color: "white" }}>ADD</Text>
+          </S.CardActionCart>
+        </S.CardActionsWrapper>
       </S.CardContent>
     </S.CardWrapper>
   );

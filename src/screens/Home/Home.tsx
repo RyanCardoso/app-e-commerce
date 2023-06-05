@@ -1,9 +1,12 @@
 // Libs
 import React, { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 
 // Components
 import { Card } from "../../components";
+
+// Styles
+import * as S from "./styles";
 
 export const Home = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -21,15 +24,15 @@ export const Home = () => {
   }, []);
 
   return (
-    <View style={{ width: "100%", paddingHorizontal: 20 }}>
+    <S.HomeWrapper>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ width: "100%" }}
       >
         {products.map((product) => (
           <Card
-            id={0}
             key={product.id}
+            id={product.id}
             title={product.title}
             brand={product.brand}
             thumbnail={product.thumbnail}
@@ -39,6 +42,6 @@ export const Home = () => {
           />
         ))}
       </ScrollView>
-    </View>
+    </S.HomeWrapper>
   );
 };
