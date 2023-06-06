@@ -25,6 +25,12 @@ export const Header = () => {
 
   const { searchProducts } = productService;
 
+  const handleChangeSearch = (value: string) => {
+    if (!value) addToSearchList(null);
+
+    setSearchValue(value);
+  };
+
   const handleSearch = async () => {
     handleLoadingSearch(true);
 
@@ -74,7 +80,7 @@ export const Header = () => {
 
       <Input
         placeholder="Pesquisar produtos"
-        onChangeText={setSearchValue}
+        onChangeText={handleChangeSearch}
         onSubmitEditing={handleConfirmSearch}
         isLoading={loadingSearch}
         value={searchValue}

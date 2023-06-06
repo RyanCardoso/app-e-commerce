@@ -9,7 +9,6 @@ export const CardWrapper = styled.View`
   border-radius: 4px;
 
   overflow: hidden;
-  margin-bottom: 10px;
 `;
 
 export const CardImageWrapper = styled.View`
