@@ -1,3 +1,3 @@
-import { ProductListDTO } from "./index";
+import { ProductListDTO } from "../index";
 
 export interface CardProps extends ProductListDTO {}

@@ -14,7 +14,7 @@ export type ProductDTO = {
 
 export type ProductListDTO = Omit<ProductDTO, "description" | "images">;
 
-export interface SearchProductsResponse {
+export interface ProductsResponse {
   products: ProductListDTO[];
   total: number;
   skip: number;

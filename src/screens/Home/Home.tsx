@@ -6,24 +6,38 @@ import { ScrollView } from "react-native";
 import { AppContext } from "../../context";
 
 // Components
-import { Card } from "../../components";
+import { Card, ListProducts } from "../../components";
 
 // Types
 import { ProductListDTO } from "../../types";
 
 // Styles
 import * as S from "./styles";
+import { productService } from "../../services";
+import { CardSkeleton } from "../../components/Card";
 
 export const Home = () => {
   const { searchProduct } = useContext(AppContext);
   const [products, setProducts] = useState<ProductListDTO[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const getProducts = () => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((res) => {
-        setProducts(res.products);
-      });
+  const { getAllProducts } = productService;
+
+  const getProducts = async () => {
+    setLoading(true);
+
+    try {
+      const response = await getAllProducts();
+      const { data } = response;
+
+      setLoading(false);
+      if (!data || data.total === 0) return;
+
+      setProducts(data.products);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -32,26 +46,11 @@ export const Home = () => {
 
   return (
     <S.HomeWrapper>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ width: "100%" }}
-        contentContainerStyle={{ paddingHorizontal: 5 }}
-      >
-        {(searchProduct || products)?.map((product) => (
-          <Card
-            key={product.id}
-            id={product.id}
-            title={product.title}
-            brand={product.brand}
-            thumbnail={product.thumbnail}
-            rating={product.rating}
-            price={product.price}
-            discountPercentage={product.discountPercentage}
-            stock={product.stock}
-            category={product.category}
-          />
-        ))}
-      </ScrollView>
+      <ListProducts
+        products={products as []}
+        searchProduct={searchProduct as []}
+        isLoading={loading}
+      />
     </S.HomeWrapper>
   );
 };

@@ -8,19 +8,15 @@ import { handleError } from "../../utils";
 import { searchAPI } from "../api";
 
 // Types
-import {
-  ApiResponse,
-  SearchProductsResponse,
-  ProductListDTO,
-} from "../../types";
+import { ApiResponse, ProductsResponse, ProductListDTO } from "../../types";
 
-const getAllProducts = (): Promise<AxiosResponse<ProductListDTO[]>> => {
+const getAllProducts = async (): Promise<ApiResponse<ProductsResponse>> => {
   try {
-    const data = searchAPI.getAllProducts();
+    const response = await searchAPI.getAllProducts();
 
-    return data;
+    return { data: response.data, error: undefined };
   } catch (error: any) {
-    throw error;
+    return handleError(error);
   }
 };
 
@@ -36,7 +32,7 @@ const getProductById = (id: number): Promise<AxiosResponse<ProductListDTO>> => {
 
 const searchProducts = async (
   query: string
-): Promise<ApiResponse<SearchProductsResponse>> => {
+): Promise<ApiResponse<ProductsResponse>> => {
   try {
     const response = await searchAPI.searchProducts(query);
 

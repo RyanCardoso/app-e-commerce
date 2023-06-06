@@ -6,4 +6,5 @@ export const HomeWrapper = styled.View`
   background-color: #fff;
   align-items: center;
   justify-content: center;
+  padding-top: 16px;
 `;
