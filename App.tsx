@@ -9,7 +9,7 @@ import ToastManager from "toastify-react-native";
 import { Header } from "./src/components";
 
 // Screens
-import { Home, Product } from "./src/screens";
+import { Home, Product, ShoppingCart } from "./src/screens";
 
 // Context
 import { AppProvider } from "./src/context";
@@ -25,14 +25,15 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.95);
 export default function App() {
   return (
     <AppProvider>
-      <Header />
       <NavigationContainer>
+        <Header />
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Product" component={Product} />
+          <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
         </Stack.Navigator>
       </NavigationContainer>
       <ToastManager

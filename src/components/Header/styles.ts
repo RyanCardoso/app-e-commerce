@@ -33,7 +33,7 @@ export const LogoTitle = styled.Text`
   margin-left: 5px;
 `;
 
-export const CartWrapper = styled.View`
+export const CartWrapper = styled.TouchableOpacity`
   width: 30px;
   height: 30px;
   background-color: orange;

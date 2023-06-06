@@ -14,14 +14,21 @@ import { Input } from "../Input";
 
 // Style
 import * as S from "./styles";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from "@react-navigation/native";
 
 const LOGO_IMAGE =
   "https://cdn2.trampos.co/companies/logos/494357/4c9fccf77a5996ef4f763f6496d66c17176f912f/original/logo_visie_sem_texto.png";
 
 export const Header = () => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+
+  const [searchValue, setSearchValue] = useState<string>("");
   const { cartItems, loadingSearch, addToSearchList, handleLoadingSearch } =
     useContext(AppContext);
-  const [searchValue, setSearchValue] = useState<string>("");
 
   const { searchProducts } = productService;
 
@@ -29,6 +36,10 @@ export const Header = () => {
     if (!value) addToSearchList(null);
 
     setSearchValue(value);
+  };
+
+  const redirectToShoppingCart = () => {
+    navigation.navigate("ShoppingCart");
   };
 
   const handleSearch = async () => {
@@ -70,7 +81,7 @@ export const Header = () => {
           <S.LogoTitle>Visie</S.LogoTitle>
         </S.LogoWrapper>
 
-        <S.CartWrapper>
+        <S.CartWrapper onPress={redirectToShoppingCart}>
           {/* Add Cart Icon */}
           <S.CartBadge>
             <S.CartCount>{cartItems.length}</S.CartCount>
