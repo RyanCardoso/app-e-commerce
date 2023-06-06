@@ -1,7 +1,6 @@
 // Libs
 import React, { useState, useEffect } from "react";
-import { StatusBar, Dimensions, Text, View, Image } from "react-native";
-// import { StatusBar } from "expo-status-bar";
+import { Dimensions, Text, View, Image } from "react-native";
 import Carousel from "react-native-snap-carousel";
 
 // Components
@@ -10,9 +9,11 @@ import { Button, ProductDetails, Rating } from "../../components";
 // Types
 import { ProductDTO, ProductScreenProps } from "../../types";
 
+// Utils
+import { discontCalc, formatPrice } from "../../utils";
+
 // Styles
 import * as S from "./styles";
-import { discontCalc, formatPrice } from "../../utils";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
@@ -52,7 +53,6 @@ export const Product: React.FC<ProductScreenProps> = ({
 
   return (
     <S.ProductWrapper>
-      <StatusBar backgroundColor="transparent" barStyle="dark-content" />
       <S.ProductScroll contentContainerStyle={{ paddingVertical: 16 }}>
         <S.ProductHeader>
           <S.ProductTitle>{product.title}</S.ProductTitle>

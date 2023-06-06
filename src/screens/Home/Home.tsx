@@ -1,7 +1,6 @@
 // Libs
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import ToastManager from "toastify-react-native";
 
 // Components
 import { Card } from "../../components";
@@ -29,13 +28,6 @@ export const Home = () => {
 
   return (
     <S.HomeWrapper>
-      <ToastManager
-        duration={90000}
-        width={360}
-        position="bottom"
-        style={{ fontSize: 12 }}
-      />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ width: "100%" }}
