@@ -1,9 +1,13 @@
 // Libs
-import React, { useContext } from "react";
-import { Image, Text, TextInput, StatusBar, View } from "react-native";
+import React, { useContext, useState } from "react";
+import { StatusBar } from "react-native";
+import { Toast } from "toastify-react-native";
 
 // Context
 import { AppContext } from "../../context";
+
+// Services
+import { productService } from "../../services";
 
 // Components
 import { Input } from "../Input";
@@ -15,7 +19,38 @@ const LOGO_IMAGE =
   "https://cdn2.trampos.co/companies/logos/494357/4c9fccf77a5996ef4f763f6496d66c17176f912f/original/logo_visie_sem_texto.png";
 
 export const Header = () => {
-  const { cartItems } = useContext(AppContext);
+  const { cartItems, loadingSearch, addToSearchList, handleLoadingSearch } =
+    useContext(AppContext);
+  const [searchValue, setSearchValue] = useState<string>("");
+
+  const { searchProducts } = productService;
+
+  const handleSearch = async () => {
+    handleLoadingSearch(true);
+
+    try {
+      const response = await searchProducts(searchValue);
+      const { data } = response;
+
+      handleLoadingSearch(false);
+
+      if (!data || data.total === 0) {
+        Toast.error("Nenhum produto encontrado");
+        return;
+      }
+
+      addToSearchList(data.products);
+    } catch (error) {
+      console.error(error);
+      handleLoadingSearch(false);
+    }
+  };
+
+  const handleConfirmSearch = () => {
+    if (!searchValue) return;
+
+    handleSearch();
+  };
 
   return (
     <S.HeaderWrapper
@@ -37,7 +72,13 @@ export const Header = () => {
         </S.CartWrapper>
       </S.HeaderContent>
 
-      <Input />
+      <Input
+        placeholder="Pesquisar produtos"
+        onChangeText={setSearchValue}
+        onSubmitEditing={handleConfirmSearch}
+        isLoading={loadingSearch}
+        value={searchValue}
+      />
     </S.HeaderWrapper>
   );
 };

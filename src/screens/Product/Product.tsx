@@ -66,12 +66,12 @@ export const Product: React.FC<ProductScreenProps> = ({
             justifyContent: "center",
           }}
         >
-          <Carousel
+          {/* <Carousel
             data={product.images as string[]}
             renderItem={renderCarouselItem}
             sliderWidth={SLIDER_WIDTH}
             itemWidth={ITEM_WIDTH}
-          />
+          /> */}
         </View>
 
         <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>

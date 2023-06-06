@@ -9,7 +9,7 @@ export const Rating = ({ rating }: { rating: number }) => {
   return (
     <S.RatingWrapper>
       <S.RatingValue>{rating}</S.RatingValue>
-      <StarRating
+      {/* <StarRating
         disabled
         maxStars={5}
         rating={rating}
@@ -17,7 +17,7 @@ export const Rating = ({ rating }: { rating: number }) => {
         fullStarColor="gold"
         emptyStarColor="gray"
         containerStyle={{ width: 90 }}
-      />
+      /> */}
     </S.RatingWrapper>
   );
 };

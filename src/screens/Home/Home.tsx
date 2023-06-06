@@ -1,6 +1,9 @@
 // Libs
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
+
+// Context
+import { AppContext } from "../../context";
 
 // Components
 import { Card } from "../../components";
@@ -12,7 +15,8 @@ import { ProductListDTO } from "../../types";
 import * as S from "./styles";
 
 export const Home = () => {
-  const [products, setProducts] = useState<ProductListDTO[]>([]);
+  const { searchProduct } = useContext(AppContext);
+  const [products, setProducts] = useState<ProductListDTO[] | null>(null);
 
   const getProducts = () => {
     fetch("https://dummyjson.com/products")
@@ -31,8 +35,9 @@ export const Home = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ width: "100%" }}
+        contentContainerStyle={{ paddingHorizontal: 5 }}
       >
-        {products.map((product) => (
+        {(searchProduct || products)?.map((product) => (
           <Card
             key={product.id}
             id={product.id}

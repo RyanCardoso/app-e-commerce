@@ -13,3 +13,15 @@ export type ProductDTO = {
 };
 
 export type ProductListDTO = Omit<ProductDTO, "description" | "images">;
+
+export interface SearchProductsResponse {
+  products: ProductListDTO[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
+export interface ApiResponse<DataType> {
+  data?: DataType;
+  error?: string;
+}

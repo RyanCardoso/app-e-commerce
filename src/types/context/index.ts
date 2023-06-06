@@ -9,10 +9,14 @@ type CarItem = {
 };
 
 export interface AppContextProps {
-  favoriteItems: ProductListDTO[];
+  searchProduct: ProductListDTO[] | null;
+  favoriteItems: ProductListDTO[] | null;
   cartItems: CarItem[];
+  loadingSearch: boolean;
+  addToSearchList: (item: ProductListDTO[] | null) => void;
   addToFavorites: (item: ProductListDTO) => void;
   addToCart: (item: CarItem) => void;
+  handleLoadingSearch: (isLoading: boolean) => void;
 }
 
 export interface AppProviderProps {
