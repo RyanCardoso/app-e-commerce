@@ -1,23 +1,23 @@
 // Libs
 import React, { useContext, useEffect, useState } from "react";
-import { ScrollView } from "react-native";
 
 // Context
 import { AppContext } from "../../context";
 
+// Service
+import { productService } from "../../services";
+
 // Components
-import { Card, ListProducts } from "../../components";
+import { ListProducts } from "../../components";
 
 // Types
 import { ProductListDTO } from "../../types";
 
 // Styles
 import * as S from "./styles";
-import { productService } from "../../services";
-import { CardSkeleton } from "../../components/Card";
-
 export const Home = () => {
   const { searchProduct } = useContext(AppContext);
+
   const [products, setProducts] = useState<ProductListDTO[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 

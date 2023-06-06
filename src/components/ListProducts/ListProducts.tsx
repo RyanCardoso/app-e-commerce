@@ -12,6 +12,7 @@ import { ListProductsProps } from "../../types";
 
 // Styles
 import * as S from "./styles";
+import { Skeleton } from "../Skeleton";
 
 export const ListProducts = ({
   products,
@@ -29,30 +30,38 @@ export const ListProducts = ({
 
   return (
     <S.ScrollView>
-      {!productList || isLoading || loadingSearch
-        ? new Array(6).fill(0).map((_, index) => <CardSkeleton key={index} />)
-        : products &&
-          getUniqueCategories()?.map((category) => (
-            <S.CategoryWrapper key={category}>
-              <S.CategoryTitle>{category}</S.CategoryTitle>
-              {productList
-                .filter((product) => product.category === category)
-                .map((product) => (
-                  <Card
-                    key={product.id}
-                    id={product.id}
-                    title={product.title}
-                    brand={product.brand}
-                    thumbnail={product.thumbnail}
-                    rating={product.rating}
-                    price={product.price}
-                    discountPercentage={product.discountPercentage}
-                    stock={product.stock}
-                    category={product.category}
-                  />
-                ))}
-            </S.CategoryWrapper>
+      {!productList || isLoading || loadingSearch ? (
+        <S.CategoryWrapper>
+          <S.CategoryTitle style={{ width: "100%" }}>
+            <Skeleton width={300} height={30} />
+          </S.CategoryTitle>
+          {new Array(6).fill(0).map((_, index) => (
+            <CardSkeleton key={index} />
           ))}
+        </S.CategoryWrapper>
+      ) : (
+        getUniqueCategories()?.map((category) => (
+          <S.CategoryWrapper key={category}>
+            <S.CategoryTitle>{category}</S.CategoryTitle>
+            {productList
+              .filter((product) => product.category === category)
+              .map((product) => (
+                <Card
+                  key={product.id}
+                  id={product.id}
+                  title={product.title}
+                  brand={product.brand}
+                  thumbnail={product.thumbnail}
+                  rating={product.rating}
+                  price={product.price}
+                  discountPercentage={product.discountPercentage}
+                  stock={product.stock}
+                  category={product.category}
+                />
+              ))}
+          </S.CategoryWrapper>
+        ))
+      )}
     </S.ScrollView>
   );
 };
