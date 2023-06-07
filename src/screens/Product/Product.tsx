@@ -4,7 +4,7 @@ import { Dimensions, Text, View, Image } from "react-native";
 import Carousel from "react-native-snap-carousel";
 
 // Components
-import { Button, ProductDetails, Rating } from "../../components";
+import { Button, Layout, ProductDetails, Rating } from "../../components";
 
 // Types
 import { ProductDTO, ProductScreenProps } from "../../types";
@@ -18,10 +18,7 @@ import * as S from "./styles";
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
-export const Product: React.FC<ProductScreenProps> = ({
-  route,
-  navigation,
-}) => {
+export const Product: React.FC<ProductScreenProps> = ({ route }) => {
   const { productId } = route.params;
 
   const [product, setProduct] = useState<ProductDTO>({} as ProductDTO);
@@ -52,63 +49,65 @@ export const Product: React.FC<ProductScreenProps> = ({
   }, [productId]);
 
   return (
-    <S.ProductWrapper>
-      <S.ProductScroll contentContainerStyle={{ paddingVertical: 16 }}>
-        <S.ProductHeader>
-          <S.ProductTitle>{product.title}</S.ProductTitle>
-          <Rating rating={product.rating as number} />
-        </S.ProductHeader>
+    <Layout>
+      <S.ProductWrapper>
+        <S.ProductScroll contentContainerStyle={{ paddingVertical: 16 }}>
+          <S.ProductHeader>
+            <S.ProductTitle>{product.title}</S.ProductTitle>
+            <Rating rating={product.rating as number} />
+          </S.ProductHeader>
 
-        <View
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {/* <Carousel
+          <View
+            style={{
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {/* <Carousel
             data={product.images as string[]}
             renderItem={renderCarouselItem}
             sliderWidth={SLIDER_WIDTH}
             itemWidth={ITEM_WIDTH}
           /> */}
-        </View>
-
-        <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-          {/* Discount */}
-          <View style={{ flexDirection: "row", gap: 10 }}>
-            <Text style={{ color: "#CC0C39", fontSize: 28 }}>
-              -{product.discountPercentage}%
-            </Text>
-            <Text style={{ fontSize: 28 }}>
-              {discontCalc(product.price, product.discountPercentage)}
-            </Text>
           </View>
 
-          {/* Price with discount */}
-          <Text>
-            De{" "}
-            <Text style={{ textDecorationLine: "line-through" }}>
-              {formatPrice(product.price || 0)}
+          <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
+            {/* Discount */}
+            <View style={{ flexDirection: "row", gap: 10 }}>
+              <Text style={{ color: "#CC0C39", fontSize: 28 }}>
+                -{product.discountPercentage}%
+              </Text>
+              <Text style={{ fontSize: 28 }}>
+                {discontCalc(product.price, product.discountPercentage)}
+              </Text>
+            </View>
+
+            {/* Price with discount */}
+            <Text>
+              De{" "}
+              <Text style={{ textDecorationLine: "line-through" }}>
+                {formatPrice(product.price || 0)}
+              </Text>
             </Text>
-          </Text>
 
-          {/* Actions */}
-          <View style={{ gap: 10, paddingVertical: 16 }}>
-            <Text>Em estoque: {product.stock}</Text>
+            {/* Actions */}
+            <View style={{ gap: 10, paddingVertical: 16 }}>
+              <Text>Em estoque: {product.stock}</Text>
 
-            <Button label="Adicionar ao carrinho" />
-            <Button label="Comprar agora" backgroundColor="#FFD814" />
+              <Button label="Adicionar ao carrinho" />
+              <Button label="Comprar agora" backgroundColor="#FFD814" />
+            </View>
           </View>
-        </View>
 
-        <ProductDetails
-          brand={product.brand}
-          category={product.category}
-          title={product.title}
-          description={product.description}
-        />
-      </S.ProductScroll>
-    </S.ProductWrapper>
+          <ProductDetails
+            brand={product.brand}
+            category={product.category}
+            title={product.title}
+            description={product.description}
+          />
+        </S.ProductScroll>
+      </S.ProductWrapper>
+    </Layout>
   );
 };

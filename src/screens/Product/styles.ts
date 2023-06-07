@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-export const ProductWrapper = styled.SafeAreaView`
+export const ProductWrapper = styled.View`
   flex: 1;
   background-color: #fff;
 `;

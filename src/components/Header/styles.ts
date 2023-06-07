@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-export const HeaderWrapper = styled.SafeAreaView`
+export const HeaderWrapper = styled.View`
   width: 100%;
   padding: 16px;
   background-color: #000;
@@ -31,6 +31,12 @@ export const LogoTitle = styled.Text`
   font-weight: bold;
   text-transform: uppercase;
   margin-left: 5px;
+`;
+
+export const HeaderTitle = styled.Text`
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
 `;
 
 export const CartWrapper = styled.TouchableOpacity`

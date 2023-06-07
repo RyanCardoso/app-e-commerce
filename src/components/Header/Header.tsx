@@ -1,7 +1,13 @@
 // Libs
 import React, { useContext, useState } from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, Text } from "react-native";
 import { Toast } from "toastify-react-native";
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 
 // Context
 import { AppContext } from "../../context";
@@ -14,16 +20,28 @@ import { Input } from "../Input";
 
 // Style
 import * as S from "./styles";
-import {
-  NavigationProp,
-  ParamListBase,
-  useNavigation,
-} from "@react-navigation/native";
 
 const LOGO_IMAGE =
   "https://cdn2.trampos.co/companies/logos/494357/4c9fccf77a5996ef4f763f6496d66c17176f912f/original/logo_visie_sem_texto.png";
 
+interface NameScreenProps {
+  onPress: () => void;
+  name: string;
+}
+
+const NameScreen = ({ onPress, name }: NameScreenProps) => {
+  return (
+    <>
+      <Text style={{ color: "#FFF" }} onPress={onPress}>
+        Voltar
+      </Text>
+      <S.HeaderTitle>{name}</S.HeaderTitle>
+    </>
+  );
+};
+
 export const Header = () => {
+  const route = useRoute();
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   const [searchValue, setSearchValue] = useState<string>("");
@@ -31,6 +49,7 @@ export const Header = () => {
     useContext(AppContext);
 
   const { searchProducts } = productService;
+  const isHome = route.name === "Home";
 
   const handleChangeSearch = (value: string) => {
     if (!value) addToSearchList(null);
@@ -40,6 +59,10 @@ export const Header = () => {
 
   const redirectToShoppingCart = () => {
     navigation.navigate("ShoppingCart");
+  };
+
+  const handleGoBack = () => {
+    navigation.goBack();
   };
 
   const handleSearch = async () => {
@@ -76,10 +99,14 @@ export const Header = () => {
       <StatusBar backgroundColor="transparent" translucent />
 
       <S.HeaderContent>
-        <S.LogoWrapper>
-          <S.LogoImg source={{ uri: LOGO_IMAGE }} />
-          <S.LogoTitle>Visie</S.LogoTitle>
-        </S.LogoWrapper>
+        {isHome && (
+          <S.LogoWrapper>
+            <S.LogoImg source={{ uri: LOGO_IMAGE }} />
+            <S.LogoTitle>Visie</S.LogoTitle>
+          </S.LogoWrapper>
+        )}
+
+        {!isHome && <NameScreen onPress={handleGoBack} name={route.name} />}
 
         <S.CartWrapper onPress={redirectToShoppingCart}>
           {/* Add Cart Icon */}
@@ -89,13 +116,15 @@ export const Header = () => {
         </S.CartWrapper>
       </S.HeaderContent>
 
-      <Input
-        placeholder="Pesquisar produtos"
-        onChangeText={handleChangeSearch}
-        onSubmitEditing={handleConfirmSearch}
-        isLoading={loadingSearch}
-        value={searchValue}
-      />
+      {isHome && (
+        <Input
+          placeholder="Pesquisar produtos"
+          onChangeText={handleChangeSearch}
+          onSubmitEditing={handleConfirmSearch}
+          isLoading={loadingSearch}
+          value={searchValue}
+        />
+      )}
     </S.HeaderWrapper>
   );
 };

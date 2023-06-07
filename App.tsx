@@ -5,9 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import ToastManager from "toastify-react-native";
 
-// Components
-import { Header } from "./src/components";
-
 // Screens
 import { Home, Product, ShoppingCart } from "./src/screens";
 
@@ -26,7 +23,6 @@ export default function App() {
   return (
     <AppProvider>
       <NavigationContainer>
-        <Header />
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{ headerShown: false }}

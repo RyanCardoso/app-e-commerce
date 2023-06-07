@@ -8,7 +8,7 @@ import { AppContext } from "../../context";
 import { productService } from "../../services";
 
 // Components
-import { ListProducts } from "../../components";
+import { Layout, ListProducts } from "../../components";
 
 // Types
 import { ProductListDTO } from "../../types";
@@ -45,12 +45,14 @@ export const Home = () => {
   }, []);
 
   return (
-    <S.HomeWrapper>
-      <ListProducts
-        products={products as []}
-        searchProduct={searchProduct as []}
-        isLoading={loading}
-      />
-    </S.HomeWrapper>
+    <Layout>
+      <S.HomeWrapper>
+        <ListProducts
+          products={products as []}
+          searchProduct={searchProduct as []}
+          isLoading={loading}
+        />
+      </S.HomeWrapper>
+    </Layout>
   );
 };
