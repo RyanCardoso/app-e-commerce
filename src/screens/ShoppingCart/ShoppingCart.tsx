@@ -1,20 +1,112 @@
 // Libs
 import React, { useContext } from "react";
-import { SafeAreaView, ScrollView, Text } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 // Context
 import { AppContext } from "../../context";
 
+// Utils
+import { formatPrice } from "../../utils";
+
 export const ShoppingCart = () => {
-  const { cartItems } = useContext(AppContext);
+  const { cartItems, addToCart, removeFromCart } = useContext(AppContext);
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <Text>Shopping Cart</Text>
+    <SafeAreaView style={{ flex: 1, paddingHorizontal: 16, backgroundColor: '#FFF'}}>
+      <ScrollView contentContainerStyle={{ gap: 16, paddingTop: 16 }}>
+        {!cartItems && <Text>Nenhum produto adicionado ao carrinho.</Text>}
 
-        {cartItems.map((item) => (
-          <Text key={item.id}>{item.title}</Text>
+        {cartItems?.map((item) => (
+          <View
+            key={item?.id}
+            style={{
+              flexDirection: "row",
+              borderWidth: 1,
+              borderColor: "#f5f5f5",
+              borderRadius: 4,
+              overflow: "hidden",
+            }}
+          >
+            <View>
+              <Image
+                source={{ uri: item?.thumbnail }}
+                style={{ width: 100, height: 100 }}
+              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: "column",
+                justifyContent: "space-between",
+                padding: 10,
+              }}
+            >
+              <View>
+                <Text>{item?.title}</Text>
+                <Text>{formatPrice(item?.price)}</Text>
+              </View>
+
+              <View style={{ flexDirection: "row" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    overflow: "hidden",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => removeFromCart(item?.id)}
+                    style={{
+                      paddingVertical: 5,
+                      paddingHorizontal: 15,
+                      backgroundColor: "#D5D9D9",
+                    }}
+                  >
+                    <Text>-</Text>
+                  </TouchableOpacity>
+
+                  <Text style={{ width: 50, textAlign: "center" }}>
+                    {item?.quantity}
+                  </Text>
+
+                  <TouchableOpacity
+                    onPress={() => addToCart(item)}
+                    style={{
+                      paddingVertical: 5,
+                      paddingHorizontal: 15,
+                      backgroundColor: "#D5D9D9",
+                    }}
+                  >
+                    <Text>+</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity
+                  onPress={() => removeFromCart(item?.id, true)}
+                  style={{
+                    marginLeft: 10,
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingVertical: 5,
+                    paddingHorizontal: 15,
+                  }}
+                >
+                  <Text>Excluir</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         ))}
       </ScrollView>
     </SafeAreaView>

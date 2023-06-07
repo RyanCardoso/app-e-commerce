@@ -84,7 +84,7 @@ export const Header = () => {
         <S.CartWrapper onPress={redirectToShoppingCart}>
           {/* Add Cart Icon */}
           <S.CartBadge>
-            <S.CartCount>{cartItems.length}</S.CartCount>
+            <S.CartCount>{cartItems?.length}</S.CartCount>
           </S.CartBadge>
         </S.CartWrapper>
       </S.HeaderContent>
