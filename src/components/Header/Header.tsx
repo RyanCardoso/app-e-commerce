@@ -18,11 +18,12 @@ import { productService } from "../../services";
 // Components
 import { Input } from "../Input";
 
+// Icons
+import IconCart from "../../assets/icons/car.svg";
+import IconLogo from "../../assets/icons/visie-logo.svg";
+
 // Style
 import * as S from "./styles";
-
-const LOGO_IMAGE =
-  "https://cdn2.trampos.co/companies/logos/494357/4c9fccf77a5996ef4f763f6496d66c17176f912f/original/logo_visie_sem_texto.png";
 
 interface NameScreenProps {
   onPress: () => void;
@@ -101,15 +102,14 @@ export const Header = () => {
       <S.HeaderContent>
         {isHome && (
           <S.LogoWrapper>
-            <S.LogoImg source={{ uri: LOGO_IMAGE }} />
-            <S.LogoTitle>Visie</S.LogoTitle>
+            <IconLogo width={100} />
           </S.LogoWrapper>
         )}
 
         {!isHome && <NameScreen onPress={handleGoBack} name={route.name} />}
 
         <S.CartWrapper onPress={redirectToShoppingCart}>
-          {/* Add Cart Icon */}
+          <IconCart width={32} height={32} color="#FFF" fill="#FFF" />
           <S.CartBadge>
             <S.CartCount>{cartItems?.length}</S.CartCount>
           </S.CartBadge>

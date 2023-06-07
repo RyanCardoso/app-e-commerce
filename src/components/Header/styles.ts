@@ -4,7 +4,6 @@ export const HeaderWrapper = styled.View`
   width: 100%;
   padding: 16px;
   background-color: #000;
-  /* background-color: #232f3e; */
 `;
 
 export const HeaderContent = styled.View`
@@ -42,21 +41,21 @@ export const HeaderTitle = styled.Text`
 export const CartWrapper = styled.TouchableOpacity`
   width: 30px;
   height: 30px;
-  background-color: orange;
+  margin-right: 15px;
 `;
 
 export const CartBadge = styled.View`
   position: absolute;
   width: 30px;
   height: 30px;
-  top: -10px;
-  right: -10px;
+  top: -15px;
+  right: -15px;
 
   align-items: center;
   justify-content: center;
 
   border-radius: 15px;
-  background-color: #f60000;
+  background-color: #f6000092;
 `;
 
 export const CartCount = styled.Text`

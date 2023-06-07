@@ -17,6 +17,10 @@ import { AppContext } from "../../context";
 // Components
 import { Rating } from "../Rating";
 
+// Icons
+import IconCart from "../../assets/icons/car.svg";
+import IconFavorite from "../../assets/icons/favorite.svg";
+
 // Types
 import { CardProps } from "../../types";
 
@@ -67,9 +71,9 @@ export const Card = ({
     <S.CardWrapper>
       <S.CardImageWrapper>
         <S.CardImage source={{ uri: thumbnail }} />
-        <S.CardFavoriteWrapper
-          onPress={handleAddToFavorites}
-        ></S.CardFavoriteWrapper>
+        <S.CardFavoriteWrapper onPress={handleAddToFavorites}>
+          <IconFavorite width={20} height={20} stroke="pink" strokeWidth={5} />
+        </S.CardFavoriteWrapper>
       </S.CardImageWrapper>
 
       <S.CardContent>
@@ -97,7 +101,7 @@ export const Card = ({
           </S.CardActionDetails>
 
           <S.CardActionCart onPress={handleAddToCart}>
-            <Text style={{ color: "white" }}>ADD</Text>
+            <IconCart width={20} height={20} fill="#fff" />
           </S.CardActionCart>
         </S.CardActionsWrapper>
       </S.CardContent>

@@ -25,6 +25,8 @@ export const CardImage = styled.Image`
 
 export const CardFavoriteWrapper = styled.TouchableOpacity`
   position: absolute;
+  align-items: center;
+  justify-content: center;
   width: 35px;
   height: 35px;
   top: 10px;
