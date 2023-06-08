@@ -3,8 +3,13 @@ import { ProductsResponse, ProductListDTO } from "../../../types";
 
 const api = axios.create({ baseURL: "https://dummyjson.com" });
 
-const getAllProducts = (): Promise<AxiosResponse<ProductsResponse>> => {
-  return api.get("/products/");
+const getAllProducts = (
+  skip = 0,
+  limit = 10
+): Promise<AxiosResponse<ProductsResponse>> => {
+  return api.get(
+    `/products?limit=${limit}&skip=${skip}&select=id,title,price,discountPercentage,rating,stock,brand,thumbnail,description,category`
+  );
 };
 
 const getProductById = (id: number): Promise<AxiosResponse<ProductListDTO>> => {

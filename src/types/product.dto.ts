@@ -1,18 +1,20 @@
-export type ProductDTO = {
+export type ProductListDTO = {
   id: number;
   title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
   brand: string;
+  rating: number;
   category: string;
+  description: string;
+  discountPercentage: number;
+  price: number;
   thumbnail: string;
-  images: string[];
+  stock: number;
 };
 
-export type ProductListDTO = Omit<ProductDTO, "description" | "images">;
+export type ProductDTO = ProductListDTO & {
+  description: string;
+  images: string[];
+};
 
 export interface ProductsResponse {
   products: ProductListDTO[];

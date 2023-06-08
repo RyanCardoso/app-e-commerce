@@ -110,9 +110,11 @@ export const Header = memo(() => {
 
         <S.CartWrapper onPress={redirectToShoppingCart}>
           <IconCart width={32} height={32} color="#FFF" fill="#FFF" />
-          <S.CartBadge>
-            <S.CartCount>{cartItems?.length}</S.CartCount>
-          </S.CartBadge>
+          {(cartItems?.length || 0) > 0 && (
+            <S.CartBadge>
+              <S.CartCount>{cartItems?.length}</S.CartCount>
+            </S.CartBadge>
+          )}
         </S.CartWrapper>
       </S.HeaderContent>
 

@@ -66,6 +66,11 @@ export const CardPromotion = styled.Text`
   color: #ff0000;
 `;
 
+export const CardStock = styled.Text`
+  font-size: 10px;
+  color: #565959;
+`;
+
 export const CardActionsWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;

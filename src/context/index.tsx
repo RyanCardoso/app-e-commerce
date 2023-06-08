@@ -1,5 +1,5 @@
 // Libs
-import React, { createContext, useState, useCallback } from "react";
+import React, { createContext, useState, useCallback, memo } from "react";
 
 // Types
 import {
@@ -11,7 +11,7 @@ import {
 
 const AppContext = createContext<AppContextProps>({} as AppContextProps);
 
-const AppProvider = ({ children }: AppProviderProps) => {
+const AppProvider = memo(({ children }: AppProviderProps) => {
   const [searchProduct, setSearchProduct] = useState<ProductListDTO[] | null>(
     null
   );
@@ -23,67 +23,61 @@ const AppProvider = ({ children }: AppProviderProps) => {
   const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
 
   const addToFavorites = useCallback((item: ProductListDTO) => {
-    setFavoriteItems(favoriteItems ? [...(favoriteItems as []), item] : [item]);
+    setFavoriteItems((prevItems) =>
+      prevItems ? [...prevItems, item] : [item]
+    );
   }, []);
 
   const addToCart = useCallback((product: CarItem) => {
-    const existingItem = cartItems?.find((item) => item.id === product.id);
+    setCartItems((prevItems) => {
+      const existingItem = prevItems?.find((item) => item.id === product.id);
 
-    if (existingItem) {
-      const updatedCart = cartItems?.map((item) => {
-        if (item.id === product.id) {
-          return { ...item, quantity: Number(item.quantity) + 1 };
-        }
-        return item;
-      }) as [];
-
-      setCartItems(updatedCart);
-    } else {
-      setCartItems(
-        cartItems
-          ? [...cartItems, { ...product, quantity: 1 }]
-          : [{ ...product, quantity: 1 }]
-      );
-    }
+      if (existingItem) {
+        return prevItems?.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: Number(item.quantity) + 1 }
+            : item
+        ) as CarItem[];
+      } else {
+        return prevItems
+          ? [...prevItems, { ...product, quantity: 1 }]
+          : [{ ...product, quantity: 1 }];
+      }
+    });
   }, []);
 
   const removeFromCart = useCallback(
     (productId: string | number, all: boolean = false) => {
-      if (all) {
-        const filterCart = cartItems?.filter(
-          (item) => item.id !== productId
-        ) as [];
-
-        if (filterCart?.length === 0) {
-          setCartItems(null);
-          return;
+      setCartItems((prevItems) => {
+        if (!prevItems) {
+          return null;
         }
 
-        setCartItems(filterCart);
-        return;
-      }
+        if (all) {
+          return prevItems.filter((item) => item.id !== productId);
+        }
 
-      const updatedCart = cartItems
-        ?.map((item) => {
-          if (item.id === productId) {
-            const newQuantity = Number(item.quantity) - 1;
-            if (newQuantity <= 0) {
-              return null;
-            } else {
-              return { ...item, quantity: newQuantity };
+        const updatedCart = prevItems
+          .map((item) => {
+            if (item.id === productId) {
+              const newQuantity = Number(item.quantity) - 1;
+              if (newQuantity <= 0) {
+                return null;
+              } else {
+                return { ...item, quantity: newQuantity };
+              }
             }
-          }
 
-          return item;
-        })
-        .filter(Boolean) as [];
+            return item;
+          })
+          .filter(Boolean) as CarItem[];
 
-      if (updatedCart?.length === 0) {
-        setCartItems(null);
-        return;
-      }
+        if (updatedCart.length === 0) {
+          return null;
+        }
 
-      setCartItems(updatedCart);
+        return updatedCart;
+      });
     },
     []
   );
@@ -118,6 +112,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
       {children}
     </AppContext.Provider>
   );
-};
+});
 
 export { AppContext, AppProvider };

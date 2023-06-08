@@ -1,17 +1,5 @@
-// Style
+import { CarouselItemProps } from "../../../../types";
 import * as S from "./styles";
-
-// Types
-import { ProductListDTO } from "../../../../types";
-
-type Item = ProductListDTO & {
-  description: string;
-};
-
-interface CarouselItemProps {
-  item: Item;
-  index: number;
-}
 
 export const BannerItem = ({ item, index }: CarouselItemProps) => (
   <S.BannerItemWrapper key={index}>

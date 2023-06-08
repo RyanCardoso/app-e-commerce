@@ -1,48 +1,56 @@
 // Libs
-import React, { useState, useEffect } from "react";
-import { Dimensions, Text, View, Image } from "react-native";
-import Carousel from "react-native-reanimated-carousel";
+import React, { useContext, useState, useEffect } from "react";
+import { Toast } from "toastify-react-native";
+
+// Context
+import { AppContext } from "../../context";
 
 // Components
-import { Button, Layout, ProductDetails, Rating } from "../../components";
+import {
+  Layout,
+  ProductBuy,
+  ProductDetails,
+  Rating,
+  Showcase,
+} from "../../components";
+
+// Icons
+import IconFavorite from "../../assets/icons/favorite.svg";
 
 // Types
 import { ProductDTO, ProductScreenProps } from "../../types";
 
-// Utils
-import { discontCalc, formatPrice } from "../../utils";
-
 // Styles
 import * as S from "./styles";
-
-const SLIDER_WIDTH = Dimensions.get("window").width;
-const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
 
 export const Product: React.FC<ProductScreenProps> = ({ route }) => {
   const { productId } = route.params;
 
+  const { addToFavorites } = useContext(AppContext);
   const [product, setProduct] = useState<ProductDTO>({} as ProductDTO);
+
+  const handleAddToFavorite = () => {
+    addToFavorites({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      thumbnail: product.thumbnail,
+      stock: product.stock,
+      discountPercentage: product.discountPercentage,
+      brand: product.brand,
+      rating: product.rating,
+      category: product.category,
+      description: product.description,
+    });
+
+    Toast.success("Produto adicionado aos favoritos!");
+  };
 
   const getProduct = () => {
     fetch(`https://dummyjson.com/products/${productId}`)
       .then((res) => res.json())
       .then(setProduct);
   };
-
-  const renderCarouselItem = ({
-    item,
-    index,
-  }: {
-    item: any;
-    index: number;
-  }) => (
-    <View key={index} style={{ width: SLIDER_WIDTH }}>
-      <Image
-        style={{ borderRadius: 5, height: ITEM_WIDTH }}
-        source={{ uri: item }}
-      />
-    </View>
-  );
 
   useEffect(() => {
     if (productId) getProduct();
@@ -53,55 +61,31 @@ export const Product: React.FC<ProductScreenProps> = ({ route }) => {
       <S.ProductWrapper>
         <S.ProductScroll contentContainerStyle={{ paddingVertical: 16 }}>
           <S.ProductHeader>
-            <S.ProductTitle>{product.title}</S.ProductTitle>
+            <S.ProductHeaderContetent>
+              <S.ProductTitle>{product.title}</S.ProductTitle>
+
+              <S.ButtonFavorite onPress={handleAddToFavorite}>
+                <IconFavorite
+                  width={20}
+                  height={20}
+                  stroke="pink"
+                  strokeWidth={5}
+                />
+              </S.ButtonFavorite>
+            </S.ProductHeaderContetent>
             <Rating rating={product.rating as number} />
           </S.ProductHeader>
 
-          <View
-            style={{
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Carousel
-              mode="parallax"
-              loop={false}
-              defaultIndex={0}
-              data={product.images as string[]}
-              renderItem={renderCarouselItem}
-              width={SLIDER_WIDTH}
-              height={ITEM_WIDTH}
-            />
-          </View>
+          <Showcase images={product.images} />
 
-          <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-            {/* Discount */}
-            <View style={{ flexDirection: "row", gap: 10 }}>
-              <Text style={{ color: "#CC0C39", fontSize: 28 }}>
-                -{product.discountPercentage}%
-              </Text>
-              <Text style={{ fontSize: 28 }}>
-                {discontCalc(product.price, product.discountPercentage)}
-              </Text>
-            </View>
-
-            {/* Price with discount */}
-            <Text>
-              De{" "}
-              <Text style={{ textDecorationLine: "line-through" }}>
-                {formatPrice(product.price || 0)}
-              </Text>
-            </Text>
-
-            {/* Actions */}
-            <View style={{ gap: 10, paddingVertical: 16 }}>
-              <Text>Em estoque: {product.stock}</Text>
-
-              <Button label="Adicionar ao carrinho" />
-              <Button label="Comprar agora" backgroundColor="#FFD814" />
-            </View>
-          </View>
+          <ProductBuy
+            id={product.id}
+            title={product.title}
+            thumbnail={product.thumbnail}
+            discountPercentage={product.discountPercentage}
+            price={product.price}
+            stock={product.stock}
+          />
 
           <ProductDetails
             brand={product.brand}

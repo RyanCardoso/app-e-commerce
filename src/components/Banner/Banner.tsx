@@ -11,13 +11,9 @@ import { Skeleton } from "../Skeleton";
 import { BannerItem } from "./partials";
 
 // Types
-import { ProductListDTO } from "../../types";
+import { BannerProps } from "../../types";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
-
-interface BannerProps {
-  items: ProductListDTO[] | null;
-}
 
 export const Banner = ({ items }: BannerProps) => {
   return items ? (

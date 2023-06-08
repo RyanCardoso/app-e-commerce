@@ -27,8 +27,11 @@ import { CardProps } from "../../types";
 // Style
 import * as S from "./styles";
 
-export const Card = memo(
-  ({
+export const Card = memo(({ product }: CardProps) => {
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const { addToFavorites, addToCart } = useContext(AppContext);
+
+  const {
     id,
     title,
     brand,
@@ -37,81 +40,64 @@ export const Card = memo(
     price,
     discountPercentage,
     stock,
-    category,
-  }: CardProps) => {
-    const navigation: NavigationProp<ParamListBase> = useNavigation();
-    const { addToFavorites, addToCart } = useContext(AppContext);
+  } = product;
 
-    const handleAddToFavorites = () => {
-      addToFavorites({
-        id,
-        title,
-        brand,
-        thumbnail,
-        rating,
-        price,
-        discountPercentage,
-        stock,
-        category,
-      });
+  const handleAddToFavorites = () => {
+    addToFavorites({ ...product });
 
-      Toast.success("Produto adicionado aos favoritos!");
-    };
+    Toast.success("Produto adicionado aos favoritos!");
+  };
 
-    const handleAddToCart = () => {
-      addToCart({ id, title, thumbnail, price });
-    };
+  const handleAddToCart = () => {
+    addToCart({ id, title, thumbnail, price });
+  };
 
-    const redirectToProduct = () => {
-      navigation.navigate("Product", {
-        productId: id,
-      });
-    };
+  const redirectToProduct = () => {
+    navigation.navigate("Product", {
+      productId: id,
+    });
+  };
 
-    return (
-      <S.CardWrapper>
-        <S.CardImageWrapper>
-          <S.CardImage source={{ uri: thumbnail }} />
-          <S.CardFavoriteWrapper onPress={handleAddToFavorites}>
-            <IconFavorite
-              width={20}
-              height={20}
-              stroke="pink"
-              strokeWidth={5}
-            />
-          </S.CardFavoriteWrapper>
-        </S.CardImageWrapper>
+  return (
+    <S.CardWrapper>
+      <S.CardImageWrapper>
+        <S.CardImage source={{ uri: thumbnail }} />
+        <S.CardFavoriteWrapper onPress={handleAddToFavorites}>
+          <IconFavorite width={20} height={20} stroke="pink" strokeWidth={5} />
+        </S.CardFavoriteWrapper>
+      </S.CardImageWrapper>
 
-        <S.CardContent>
-          <S.CardName>{title}</S.CardName>
-          <S.CardBrand>Marca: {brand}</S.CardBrand>
+      <S.CardContent>
+        <S.CardName>{title}</S.CardName>
+        <S.CardBrand>Marca: {brand}</S.CardBrand>
 
-          <S.CardDiscountPrice>
-            {discontCalc(price, discountPercentage)}
-          </S.CardDiscountPrice>
+        <S.CardDiscountPrice>
+          {discontCalc(price, discountPercentage)}
+        </S.CardDiscountPrice>
 
-          <S.CardPrice>
-            De{" "}
-            <Text style={{ textDecorationLine: "line-through" }}>
-              {formatPrice(price)}
-            </Text>
-          </S.CardPrice>
+        <S.CardPrice>
+          De{" "}
+          <Text style={{ textDecorationLine: "line-through" }}>
+            {formatPrice(price)}
+          </Text>
+        </S.CardPrice>
 
-          <S.CardPromotion>{discountPercentage}% de desconto</S.CardPromotion>
+        <S.CardPromotion>{discountPercentage}% de desconto</S.CardPromotion>
 
-          <Rating rating={rating} />
+        <Rating rating={rating} />
 
-          <S.CardActionsWrapper>
-            <S.CardActionDetails onPress={redirectToProduct}>
-              <Text style={{ textDecorationLine: "underline" }}>Ver mais</Text>
-            </S.CardActionDetails>
+        <S.CardStock>{`${stock} produto${stock > 1 ? "s" : ""}`}</S.CardStock>
 
-            <S.CardActionCart onPress={handleAddToCart}>
-              <IconCart width={20} height={20} fill="#fff" />
-            </S.CardActionCart>
-          </S.CardActionsWrapper>
-        </S.CardContent>
-      </S.CardWrapper>
-    );
-  }
-);
+        <S.CardActionsWrapper>
+          <S.CardActionDetails onPress={redirectToProduct}>
+            <Text style={{ textDecorationLine: "underline" }}>Ver mais</Text>
+          </S.CardActionDetails>
+
+          <S.CardActionCart onPress={handleAddToCart}>
+            <IconCart width={20} height={20} fill="#fff" />
+          </S.CardActionCart>
+        </S.CardActionsWrapper>
+      </S.CardContent>
+    </S.CardWrapper>
+  );
+});

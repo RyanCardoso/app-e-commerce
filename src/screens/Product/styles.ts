@@ -14,7 +14,19 @@ export const ProductHeader = styled.View`
   padding: 0 16px 10px;
 `;
 
+export const ProductHeaderContetent = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const ProductTitle = styled.Text`
   font-size: 23px;
   font-weight: bold;
+`;
+
+export const ButtonFavorite = styled.TouchableOpacity`
+  position: absolute;
+  right: 0;
+  top: 0;
 `;

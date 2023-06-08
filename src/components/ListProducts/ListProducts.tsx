@@ -42,18 +42,7 @@ export const ListProducts = ({ products, isLoading }: ListProductsProps) => {
             {productList
               .filter((product) => product.category === category)
               .map((product) => (
-                <Card
-                  key={product.id}
-                  id={product.id}
-                  title={product.title}
-                  brand={product.brand}
-                  thumbnail={product.thumbnail}
-                  rating={product.rating}
-                  price={product.price}
-                  discountPercentage={product.discountPercentage}
-                  stock={product.stock}
-                  category={product.category}
-                />
+                <Card key={product.id} product={product} />
               ))}
           </S.CategoryWrapper>
         ))

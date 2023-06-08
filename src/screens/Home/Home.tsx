@@ -1,5 +1,8 @@
 // Libs
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+// Context
+import { AppContext } from "../../context";
 
 // Service
 import { productService } from "../../services";
@@ -14,6 +17,8 @@ import { ProductListDTO } from "../../types";
 import * as S from "./styles";
 
 export const Home = () => {
+  const { searchProduct } = useContext(AppContext);
+
   const [products, setProducts] = useState<ProductListDTO[] | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -43,7 +48,7 @@ export const Home = () => {
   return (
     <Layout>
       <S.HomeWrapper>
-        <Banner items={products} />
+        {!searchProduct && <Banner items={products} />}
         <ListProducts products={products as []} isLoading={loading} />
       </S.HomeWrapper>
     </Layout>
