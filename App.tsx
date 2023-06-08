@@ -21,8 +21,8 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.95);
 
 export default function App() {
   return (
-    <AppProvider>
-      <NavigationContainer>
+    <NavigationContainer>
+      <AppProvider>
         <Stack.Navigator
           initialRouteName="Home"
           screenOptions={{ headerShown: false }}
@@ -31,13 +31,13 @@ export default function App() {
           <Stack.Screen name="Product" component={Product} />
           <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </AppProvider>
       <ToastManager
-        duration={90000}
+        duration={10000}
         width={ITEM_WIDTH}
         position="bottom"
         style={{ fontSize: 12 }}
       />
-    </AppProvider>
+    </NavigationContainer>
   );
 }

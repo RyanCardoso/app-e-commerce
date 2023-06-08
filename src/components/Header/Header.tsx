@@ -1,5 +1,5 @@
 // Libs
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, memo } from "react";
 import { StatusBar, Text } from "react-native";
 import { Toast } from "toastify-react-native";
 import {
@@ -41,7 +41,7 @@ const NameScreen = ({ onPress, name }: NameScreenProps) => {
   );
 };
 
-export const Header = () => {
+export const Header = memo(() => {
   const route = useRoute();
   const navigation: NavigationProp<ParamListBase> = useNavigation();
 
@@ -127,4 +127,4 @@ export const Header = () => {
       )}
     </S.HeaderWrapper>
   );
-};
+});

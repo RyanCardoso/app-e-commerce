@@ -6,20 +6,16 @@ import { AppContext } from "../../context";
 
 // Components
 import { Card, CardSkeleton } from "../Card";
+import { Skeleton } from "../Skeleton";
 
 // Types
 import { ListProductsProps } from "../../types";
 
 // Styles
 import * as S from "./styles";
-import { Skeleton } from "../Skeleton";
 
-export const ListProducts = ({
-  products,
-  searchProduct,
-  isLoading,
-}: ListProductsProps) => {
-  const { loadingSearch } = useContext(AppContext);
+export const ListProducts = ({ products, isLoading }: ListProductsProps) => {
+  const { loadingSearch, searchProduct } = useContext(AppContext);
 
   const productList = searchProduct || products;
 

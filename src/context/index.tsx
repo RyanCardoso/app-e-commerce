@@ -1,5 +1,5 @@
 // Libs
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useCallback } from "react";
 
 // Types
 import {
@@ -22,11 +22,11 @@ const AppProvider = ({ children }: AppProviderProps) => {
 
   const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
 
-  const addToFavorites = (item: ProductListDTO) => {
+  const addToFavorites = useCallback((item: ProductListDTO) => {
     setFavoriteItems(favoriteItems ? [...(favoriteItems as []), item] : [item]);
-  };
+  }, []);
 
-  const addToCart = (product: CarItem) => {
+  const addToCart = useCallback((product: CarItem) => {
     const existingItem = cartItems?.find((item) => item.id === product.id);
 
     if (existingItem) {
@@ -45,57 +45,60 @@ const AppProvider = ({ children }: AppProviderProps) => {
           : [{ ...product, quantity: 1 }]
       );
     }
-  };
+  }, []);
 
-  const removeFromCart = (productId: string | number, all: boolean = false) => {
-    if (all) {
-      const filterCart = cartItems?.filter(
-        (item) => item.id !== productId
-      ) as [];
+  const removeFromCart = useCallback(
+    (productId: string | number, all: boolean = false) => {
+      if (all) {
+        const filterCart = cartItems?.filter(
+          (item) => item.id !== productId
+        ) as [];
 
-      if (filterCart?.length === 0) {
+        if (filterCart?.length === 0) {
+          setCartItems(null);
+          return;
+        }
+
+        setCartItems(filterCart);
+        return;
+      }
+
+      const updatedCart = cartItems
+        ?.map((item) => {
+          if (item.id === productId) {
+            const newQuantity = Number(item.quantity) - 1;
+            if (newQuantity <= 0) {
+              return null;
+            } else {
+              return { ...item, quantity: newQuantity };
+            }
+          }
+
+          return item;
+        })
+        .filter(Boolean) as [];
+
+      if (updatedCart?.length === 0) {
         setCartItems(null);
         return;
       }
 
-      setCartItems(filterCart);
-      return;
-    }
+      setCartItems(updatedCart);
+    },
+    []
+  );
 
-    const updatedCart = cartItems
-      ?.map((item) => {
-        if (item.id === productId) {
-          const newQuantity = Number(item.quantity) - 1;
-          if (newQuantity <= 0) {
-            return null;
-          } else {
-            return { ...item, quantity: newQuantity };
-          }
-        }
-
-        return item;
-      })
-      .filter(Boolean) as [];
-
-    if (updatedCart?.length === 0) {
-      setCartItems(null);
-      return;
-    }
-
-    setCartItems(updatedCart);
-  };
-
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCartItems(null);
-  };
+  }, []);
 
-  const addToSearchList = (item: ProductListDTO[] | null) => {
+  const addToSearchList = useCallback((item: ProductListDTO[] | null) => {
     setSearchProduct(item);
-  };
+  }, []);
 
-  const handleLoadingSearch = (bool: boolean) => {
+  const handleLoadingSearch = useCallback((bool: boolean) => {
     setLoadingSearch(bool);
-  };
+  }, []);
 
   return (
     <AppContext.Provider
