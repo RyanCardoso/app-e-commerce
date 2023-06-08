@@ -10,6 +10,17 @@ export const discontCalc = (price: number, percentage: number) => {
   return formatPrice(price - discont);
 };
 
+export const shuffleArray = (array: []) => {
+  const newArray = [...array];
+
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+
+  return newArray.slice(0, 5);
+};
+
 export const handleError = (error: any) => {
   const errorMessage =
     error.response?.data?.message || error.message || "Request failed";

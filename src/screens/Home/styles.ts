@@ -1,10 +1,12 @@
 import styled from "styled-components/native";
 
-export const HomeWrapper = styled.View`
+export const HomeWrapper = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: {
+    flexDirection: "column",
+    gap: 50,
+  },
+})`
   flex: 1;
   width: 100%;
-  background-color: #fff;
-  align-items: center;
-  justify-content: center;
-  padding-top: 16px;
 `;

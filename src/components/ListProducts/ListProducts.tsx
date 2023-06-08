@@ -29,7 +29,7 @@ export const ListProducts = ({
   };
 
   return (
-    <S.ScrollView>
+    <S.ListProductsWrapper>
       {!productList || isLoading || loadingSearch ? (
         <S.CategoryWrapper>
           <S.CategoryTitle style={{ width: "100%" }}>
@@ -62,6 +62,6 @@ export const ListProducts = ({
           </S.CategoryWrapper>
         ))
       )}
-    </S.ScrollView>
+    </S.ListProductsWrapper>
   );
 };

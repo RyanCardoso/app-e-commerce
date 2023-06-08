@@ -1,7 +1,7 @@
 // Libs
 import React, { useState, useEffect } from "react";
 import { Dimensions, Text, View, Image } from "react-native";
-import Carousel from "react-native-snap-carousel";
+import Carousel from "react-native-reanimated-carousel";
 
 // Components
 import { Button, Layout, ProductDetails, Rating } from "../../components";
@@ -36,7 +36,7 @@ export const Product: React.FC<ProductScreenProps> = ({ route }) => {
     item: any;
     index: number;
   }) => (
-    <View key={index} style={{ width: ITEM_WIDTH }}>
+    <View key={index} style={{ width: SLIDER_WIDTH }}>
       <Image
         style={{ borderRadius: 5, height: ITEM_WIDTH }}
         source={{ uri: item }}
@@ -64,12 +64,15 @@ export const Product: React.FC<ProductScreenProps> = ({ route }) => {
               justifyContent: "center",
             }}
           >
-            {/* <Carousel
-            data={product.images as string[]}
-            renderItem={renderCarouselItem}
-            sliderWidth={SLIDER_WIDTH}
-            itemWidth={ITEM_WIDTH}
-          /> */}
+            <Carousel
+              mode="parallax"
+              loop={false}
+              defaultIndex={0}
+              data={product.images as string[]}
+              renderItem={renderCarouselItem}
+              width={SLIDER_WIDTH}
+              height={ITEM_WIDTH}
+            />
           </View>
 
           <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>

@@ -1,14 +1,9 @@
 import styled from "styled-components/native";
 
-export const ScrollView = styled.ScrollView.attrs({
-  showsVerticalScrollIndicator: false,
-  contentContainerStyle: {
-    paddingHorizontal: 16,
-    flexDirection: "column",
-    gap: 50,
-  },
-})`
+export const ListProductsWrapper = styled.View`
+  flex: 1;
   width: 100%;
+  padding: 0 16px;
 `;
 
 export const CategoryWrapper = styled.View`

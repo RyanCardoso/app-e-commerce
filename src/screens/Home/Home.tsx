@@ -8,13 +8,14 @@ import { AppContext } from "../../context";
 import { productService } from "../../services";
 
 // Components
-import { Layout, ListProducts } from "../../components";
+import { Banner, Layout, ListProducts } from "../../components";
 
 // Types
 import { ProductListDTO } from "../../types";
 
 // Styles
 import * as S from "./styles";
+
 export const Home = () => {
   const { searchProduct } = useContext(AppContext);
 
@@ -47,6 +48,7 @@ export const Home = () => {
   return (
     <Layout>
       <S.HomeWrapper>
+        <Banner items={products} />
         <ListProducts
           products={products as []}
           searchProduct={searchProduct as []}
