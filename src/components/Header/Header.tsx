@@ -24,6 +24,7 @@ import IconLogo from "../../assets/icons/visie-logo.svg";
 
 // Style
 import * as S from "./styles";
+import { calcTotalItems } from "../../utils";
 
 interface NameScreenProps {
   onPress: () => void;
@@ -110,9 +111,9 @@ export const Header = memo(() => {
 
         <S.CartWrapper onPress={redirectToShoppingCart}>
           <IconCart width={32} height={32} color="#FFF" fill="#FFF" />
-          {(cartItems?.length || 0) > 0 && (
+          {cartItems && (cartItems?.length || 0) > 0 && (
             <S.CartBadge>
-              <S.CartCount>{cartItems?.length}</S.CartCount>
+              <S.CartCount>{calcTotalItems(cartItems)}</S.CartCount>
             </S.CartBadge>
           )}
         </S.CartWrapper>

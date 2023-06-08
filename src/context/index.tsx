@@ -1,5 +1,5 @@
 // Libs
-import React, { createContext, useState, useCallback, memo } from "react";
+import React, { createContext, useState, useCallback } from "react";
 
 // Types
 import {
@@ -11,7 +11,7 @@ import {
 
 const AppContext = createContext<AppContextProps>({} as AppContextProps);
 
-const AppProvider = memo(({ children }: AppProviderProps) => {
+const AppProvider = ({ children }: AppProviderProps) => {
   const [searchProduct, setSearchProduct] = useState<ProductListDTO[] | null>(
     null
   );
@@ -112,6 +112,6 @@ const AppProvider = memo(({ children }: AppProviderProps) => {
       {children}
     </AppContext.Provider>
   );
-});
+};
 
 export { AppContext, AppProvider };

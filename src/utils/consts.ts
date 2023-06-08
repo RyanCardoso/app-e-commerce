@@ -1,3 +1,5 @@
+import { CarItem } from "../types";
+
 export const formatPrice = (price: number) => {
   return price.toLocaleString("pt-br", {
     style: "currency",
@@ -19,6 +21,34 @@ export const shuffleArray = (array: []) => {
   }
 
   return newArray.slice(0, 5);
+};
+
+export const calcTotalPrice = (products: CarItem[]) => {
+  let precoGeral = 0;
+
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    const quantidade = Number(product.quantity);
+    const preco = product.price;
+
+    const precoTotal = quantidade * preco;
+    precoGeral += precoTotal;
+  }
+
+  return formatPrice(precoGeral);
+};
+
+export const calcTotalItems = (products: CarItem[]) => {
+  let total = 0;
+
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+    const quantidade = product.quantity;
+
+    total += Number(quantidade);
+  }
+
+  return total;
 };
 
 export const handleError = (error: any) => {

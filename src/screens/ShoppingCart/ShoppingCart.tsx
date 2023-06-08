@@ -1,18 +1,62 @@
 // Libs
-import React, { useContext } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
+import { Toast } from "toastify-react-native";
 
 // Context
 import { AppContext } from "../../context";
 
 // Components
-import { Layout } from "../../components";
+import { BottomBar, CardCart, Layout, ModalWarn } from "../../components";
 
 // Utils
-import { formatPrice } from "../../utils";
+import { calcTotalPrice } from "../../utils";
+
+// Types
+import { CarItem } from "../../types";
+
+type Action = "remove" | "clear" | null;
+
+const configMessages = {
+  remove: "Deseja remover esse item?",
+  clear: "Deseja limpar o carrinho?",
+};
 
 export const ShoppingCart = () => {
-  const { cartItems, addToCart, removeFromCart } = useContext(AppContext);
+  const { cartItems, addToCart, removeFromCart, clearCart } =
+    useContext(AppContext);
+
+  const [action, setAction] = useState<Action>(null);
+  const [itemSelected, setItemSelected] = useState<CarItem | null>(null);
+
+  const openModal = (item: CarItem | null, action: Action) => {
+    setAction(action);
+    setItemSelected(item);
+  };
+
+  const handleAddToCart = (item: CarItem) => {
+    addToCart(item);
+    Toast.success("Produto acrescido!");
+  };
+
+  const handleRemoveFromCart = (id: number) => {
+    removeFromCart(id);
+    Toast.success("Produto removido!");
+  };
+
+  const handleClearCart = () => openModal(null, "clear");
+  
+  const handleCancelModal = () => {
+    setAction(null);
+    setItemSelected(null);
+  };
+
+  const handleConfirmModal = () => {
+    if (action === "remove") removeFromCart(Number(itemSelected?.id), true);
+    else if (action === "clear") clearCart();
+
+    handleCancelModal();
+  };
 
   return (
     <Layout>
@@ -21,92 +65,30 @@ export const ShoppingCart = () => {
           {!cartItems && <Text>Nenhum produto adicionado ao carrinho.</Text>}
 
           {cartItems?.map((item) => (
-            <View
-              key={item?.id}
-              style={{
-                flexDirection: "row",
-                borderWidth: 1,
-                borderColor: "#f5f5f5",
-                borderRadius: 4,
-                overflow: "hidden",
-              }}
-            >
-              <View>
-                <Image
-                  source={{ uri: item?.thumbnail }}
-                  style={{ width: 100, height: 100 }}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  padding: 10,
-                }}
-              >
-                <View>
-                  <Text>{item?.title}</Text>
-                  <Text>{formatPrice(item?.price)}</Text>
-                </View>
-
-                <View style={{ flexDirection: "row" }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      borderWidth: 1,
-                      borderRadius: 5,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={() => removeFromCart(item?.id)}
-                      style={{
-                        paddingVertical: 5,
-                        paddingHorizontal: 15,
-                        backgroundColor: "#D5D9D9",
-                      }}
-                    >
-                      <Text>-</Text>
-                    </TouchableOpacity>
-
-                    <Text style={{ width: 50, textAlign: "center" }}>
-                      {item?.quantity}
-                    </Text>
-
-                    <TouchableOpacity
-                      onPress={() => addToCart(item)}
-                      style={{
-                        paddingVertical: 5,
-                        paddingHorizontal: 15,
-                        backgroundColor: "#D5D9D9",
-                      }}
-                    >
-                      <Text>+</Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <TouchableOpacity
-                    onPress={() => removeFromCart(item?.id, true)}
-                    style={{
-                      marginLeft: 10,
-                      borderWidth: 1,
-                      borderRadius: 5,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      paddingVertical: 5,
-                      paddingHorizontal: 15,
-                    }}
-                  >
-                    <Text>Excluir</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
+            <CardCart
+              key={item.id}
+              item={item}
+              onAddToCart={() => handleAddToCart(item)}
+              onRemoveFromCart={() => handleRemoveFromCart(item.id)}
+              onDeleteCart={() => openModal(item, "remove")}
+            />
           ))}
         </ScrollView>
+
+        {cartItems && (
+          <BottomBar
+            priceTotal={calcTotalPrice(cartItems)}
+            onPressClear={handleClearCart}
+          />
+        )}
       </View>
+
+      <ModalWarn
+        visible={action !== null}
+        title={configMessages[action!]}
+        onPressCancel={handleCancelModal}
+        onPressConfirm={handleConfirmModal}
+      />
     </Layout>
   );
 };
