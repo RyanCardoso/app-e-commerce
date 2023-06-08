@@ -1,6 +1,6 @@
 // Libs
 import React from "react";
-import StarRating from "react-native-star-rating";
+import StarRating from "react-native-star-rating-widget";
 
 // Styles
 import * as S from "./styles";
@@ -9,15 +9,13 @@ export const Rating = ({ rating }: { rating: number }) => {
   return (
     <S.RatingWrapper>
       <S.RatingValue>{rating}</S.RatingValue>
-      {/* <StarRating
-        disabled
-        maxStars={5}
+      <StarRating
         rating={rating}
-        starSize={15}
-        fullStarColor="gold"
-        emptyStarColor="gray"
-        containerStyle={{ width: 90 }}
-      /> */}
+        onChange={() => null}
+        animationConfig={{ scale: 1 }}
+        starStyle={{ width: 10 }}
+        starSize={20}
+      />
     </S.RatingWrapper>
   );
 };
